@@ -12,7 +12,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
 
 export const getProductById = async (req: Request, res: Response) => {
   try {
-    const product = await Product.findByPk(req.params.id);
+    const product = await Product.findByPk(String(req.params.id));
     if (product) {
       res.json(product);
     } else {
@@ -34,7 +34,7 @@ export const createProduct = async (req: Request, res: Response) => {
 
 export const updateProduct = async (req: Request, res: Response) => {
   try {
-    const product = await Product.findByPk(req.params.id);
+    const product = await Product.findByPk(String(req.params.id));
     if (product) {
       await product.update(req.body);
       res.json(product);
@@ -48,7 +48,7 @@ export const updateProduct = async (req: Request, res: Response) => {
 
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
-    const product = await Product.findByPk(req.params.id);
+    const product = await Product.findByPk(String(req.params.id));
     if (product) {
       await product.destroy();
       res.json({ message: 'Product deleted' });

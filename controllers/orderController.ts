@@ -12,7 +12,7 @@ export const getAllOrders = async (req: Request, res: Response) => {
 
 export const getOrderById = async (req: Request, res: Response) => {
   try {
-    const order = await Order.findByPk(req.params.id);
+    const order = await Order.findByPk(String(req.params.id));
     if (order) {
       res.json(order);
     } else {
@@ -34,7 +34,7 @@ export const createOrder = async (req: Request, res: Response) => {
 
 export const updateOrder = async (req: Request, res: Response) => {
   try {
-    const order = await Order.findByPk(req.params.id);
+    const order = await Order.findByPk(String(req.params.id));
     if (order) {
       await order.update(req.body);
       res.json(order);

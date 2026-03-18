@@ -3,7 +3,7 @@ import Cart from '../models/cart.js';
 
 export const getCartItems = async (req: Request, res: Response) => {
   try {
-    const cartItems = await Cart.findAll({ where: { user_id: req.params.userId } });
+    const cartItems = await Cart.findAll({ where: { user_id: String(req.params.userId) } });
     res.json(cartItems);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching cart items', error });
@@ -21,7 +21,7 @@ export const addCartItem = async (req: Request, res: Response) => {
 
 export const updateCartItem = async (req: Request, res: Response) => {
   try {
-    const cartItem = await Cart.findByPk(req.params.id);
+    const cartItem = await Cart.findByPk(String(req.params.id));
     if (cartItem) {
       await cartItem.update(req.body);
       res.json(cartItem);
@@ -35,7 +35,7 @@ export const updateCartItem = async (req: Request, res: Response) => {
 
 export const deleteCartItem = async (req: Request, res: Response) => {
   try {
-    const cartItem = await Cart.findByPk(req.params.id);
+    const cartItem = await Cart.findByPk(String(req.params.id));
     if (cartItem) {
       await cartItem.destroy();
       res.json({ message: 'Cart item deleted' });

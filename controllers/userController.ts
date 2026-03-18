@@ -14,7 +14,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
 
 export const getUserById = async (req: Request, res: Response) => {
   try {
-    const user = await User.findByPk(req.params.id);
+    const user = await User.findByPk(String(req.params.id));
     if (user) {
       res.json(user);
     } else {

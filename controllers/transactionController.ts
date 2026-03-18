@@ -12,7 +12,7 @@ export const getAllTransactions = async (req: Request, res: Response) => {
 
 export const getTransactionById = async (req: Request, res: Response) => {
   try {
-    const transaction = await Transaction.findByPk(req.params.id);
+    const transaction = await Transaction.findByPk(String(req.params.id));
     if (transaction) {
       res.json(transaction);
     } else {
