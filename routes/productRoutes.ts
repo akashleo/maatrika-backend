@@ -1,12 +1,22 @@
 import { Router } from 'express';
-import { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } from '../controllers/productController.js';
+import {
+  getAllProducts,
+  getProductById,
+  addNewProduct,
+  updateProduct,
+  removeProduct
+} from '../controllers/productController.js';
+import { authenticateToken, authorizeRoles } from '../middleware/auth.js';
 
 const router = Router();
 
-router.get('/', getAllProducts);
-router.get('/:id', getProductById);
-router.post('/', createProduct);
-router.put('/:id', updateProduct);
-router.delete('/:id', deleteProduct);
+// Routes accessible to all authenticated users
+router.get('/', authenticateToken, getAllProducts);
+router.get('/:id', authenticateToken, getProductById);
+
+// Admin only routes
+router.post('/', authenticateToken, authorizeRoles('ADMIN'), addNewProduct);
+router.put('/:id', authenticateToken, authorizeRoles('ADMIN'), updateProduct);
+router.delete('/:id', authenticateToken, authorizeRoles('ADMIN'), removeProduct);
 
 export default router;

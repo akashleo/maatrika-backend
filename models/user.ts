@@ -10,6 +10,7 @@ interface UserAttributes {
   last_name: string;
   address: string;
   phone_number: string;
+  role: 'ADMIN' | 'USER';
 }
 
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
@@ -23,6 +24,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public last_name!: string;
   public address!: string;
   public phone_number!: string;
+  public role!: 'ADMIN' | 'USER';
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -64,6 +66,11 @@ User.init(
     phone_number: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    role: {
+      type: DataTypes.ENUM('ADMIN', 'USER'),
+      allowNull: false,
+      defaultValue: 'USER',
     },
   },
   {

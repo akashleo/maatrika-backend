@@ -3,6 +3,14 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import sequelize from './config/database.js';
 
+// Import models for associations
+import User from './models/user.js';
+import Product from './models/products.js';
+import Cart from './models/cart.js';
+import Order from './models/orders.js';
+import Review from './models/reviews.js';
+import Transaction from './models/transactions.js';
+
 dotenv.config();
 
 const app = express();
@@ -10,6 +18,16 @@ const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+
+// Set up model associations
+Cart.belongsTo(User, { foreignKey: 'user_id' });
+Cart.belongsTo(Product, { foreignKey: 'product_id' });
+
+Review.belongsTo(User, { foreignKey: 'user_id' });
+Review.belongsTo(Product, { foreignKey: 'product_id' });
+
+Order.belongsTo(User, { foreignKey: 'user_id' });
+Transaction.belongsTo(Order, { foreignKey: 'order_id' });
 
 import userRoutes from './routes/userRoutes.js';
 

@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import Product from '../models/products.js';
+import { AuthRequest } from '../middleware/auth.js';
 
-export const getAllProducts = async (req: Request, res: Response) => {
+// [ADMIN/USER] Get all products - accessible to all authenticated users
+export const getAllProducts = async (req: AuthRequest, res: Response) => {
   try {
     const products = await Product.findAll();
     res.json(products);
@@ -10,7 +12,8 @@ export const getAllProducts = async (req: Request, res: Response) => {
   }
 };
 
-export const getProductById = async (req: Request, res: Response) => {
+// [ADMIN/USER] Get product by ID - accessible to all authenticated users
+export const getProductById = async (req: AuthRequest, res: Response) => {
   try {
     const product = await Product.findByPk(String(req.params.id));
     if (product) {
@@ -23,21 +26,29 @@ export const getProductById = async (req: Request, res: Response) => {
   }
 };
 
-export const createProduct = async (req: Request, res: Response) => {
+// [ADMIN] Add new product
+export const addNewProduct = async (req: AuthRequest, res: Response) => {
   try {
     const newProduct = await Product.create(req.body);
-    res.status(201).json(newProduct);
+    res.status(201).json({
+      message: 'Product created successfully',
+      product: newProduct
+    });
   } catch (error) {
     res.status(500).json({ message: 'Error creating product', error });
   }
 };
 
-export const updateProduct = async (req: Request, res: Response) => {
+// [ADMIN] Update product
+export const updateProduct = async (req: AuthRequest, res: Response) => {
   try {
     const product = await Product.findByPk(String(req.params.id));
     if (product) {
       await product.update(req.body);
-      res.json(product);
+      res.json({
+        message: 'Product updated successfully',
+        product
+      });
     } else {
       res.status(404).json({ message: 'Product not found' });
     }
@@ -46,12 +57,13 @@ export const updateProduct = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteProduct = async (req: Request, res: Response) => {
+// [ADMIN] Remove product
+export const removeProduct = async (req: AuthRequest, res: Response) => {
   try {
     const product = await Product.findByPk(String(req.params.id));
     if (product) {
       await product.destroy();
-      res.json({ message: 'Product deleted' });
+      res.json({ message: 'Product deleted successfully' });
     } else {
       res.status(404).json({ message: 'Product not found' });
     }
@@ -59,3 +71,9 @@ export const deleteProduct = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Error deleting product', error });
   }
 };
+
+// [ADMIN] Create product (alias for addNewProduct)
+export const createProduct = addNewProduct;
+
+// [ADMIN] Delete product (alias for removeProduct)
+export const deleteProduct = removeProduct;
