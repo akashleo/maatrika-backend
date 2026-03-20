@@ -49,6 +49,9 @@ app.use('/api/reviews', reviewRoutes);
 import transactionRoutes from './routes/transactionRoutes.js';
 app.use('/api/transactions', transactionRoutes);
 
+import uploadRoutes from './routes/uploadRoutes.js';
+app.use('/api/uploads', uploadRoutes);
+
 sequelize.sync().then(() => {
   console.log('Database connected');
   app.listen(port, () => {
