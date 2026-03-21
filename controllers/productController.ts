@@ -29,7 +29,15 @@ export const getProductById = async (req: AuthRequest, res: Response) => {
 // [ADMIN] Add new product
 export const addNewProduct = async (req: AuthRequest, res: Response) => {
   try {
-    const newProduct = await Product.create(req.body);
+    // Map frontend field names to backend model field names
+    const productData = {
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      quantity: req.body.quantities || [],
+      image_url: req.body.imageUrl,
+    };
+    const newProduct = await Product.create(productData);
     res.status(201).json({
       message: 'Product created successfully',
       product: newProduct
@@ -44,7 +52,15 @@ export const updateProduct = async (req: AuthRequest, res: Response) => {
   try {
     const product = await Product.findByPk(String(req.params.id));
     if (product) {
-      await product.update(req.body);
+      // Map frontend field names to backend model field names
+      const updateData: any = {};
+      if (req.body.name !== undefined) updateData.name = req.body.name;
+      if (req.body.description !== undefined) updateData.description = req.body.description;
+      if (req.body.price !== undefined) updateData.price = req.body.price;
+      if (req.body.quantities !== undefined) updateData.quantity = req.body.quantities;
+      if (req.body.imageUrl !== undefined) updateData.image_url = req.body.imageUrl;
+      
+      await product.update(updateData);
       res.json({
         message: 'Product updated successfully',
         product

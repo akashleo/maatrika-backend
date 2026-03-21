@@ -6,7 +6,7 @@ interface ProductAttributes {
   name: string;
   description: string;
   price: number;
-  stock_quantity: number;
+  quantity: number[];
   image_url: string;
 }
 
@@ -17,7 +17,7 @@ class Product extends Model<ProductAttributes, ProductCreationAttributes> implem
   public name!: string;
   public description!: string;
   public price!: number;
-  public stock_quantity!: number;
+  public quantity!: number[];
   public image_url!: string;
 
   public readonly createdAt!: Date;
@@ -43,9 +43,10 @@ Product.init(
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
-    stock_quantity: {
-      type: DataTypes.INTEGER,
+    quantity: {
+      type: DataTypes.JSON,
       allowNull: false,
+      defaultValue: [],
     },
     image_url: {
       type: DataTypes.STRING,
