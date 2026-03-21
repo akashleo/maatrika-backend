@@ -59,6 +59,11 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    role: {
+      type: DataTypes.ENUM('ADMIN', 'USER'),
+      allowNull: false,
+      defaultValue: 'USER',
+    },
     address: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -66,12 +71,7 @@ User.init(
     phone_number: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-    role: {
-      type: DataTypes.ENUM('ADMIN', 'USER'),
-      allowNull: false,
-      defaultValue: 'USER',
-    },
+    }
   },
   {
     tableName: 'users',

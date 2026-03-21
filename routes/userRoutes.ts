@@ -4,6 +4,7 @@ import {
   getUserById,
   signup,
   login,
+  adminLogin,
   createUser,
   updateUser,
   deleteUser
@@ -15,6 +16,7 @@ const router = Router();
 // Public routes
 router.post('/signup', signup);
 router.post('/login', login);
+router.post('/admin-login', adminLogin);
 
 // Protected routes - Admin only
 router.get('/', authenticateToken, authorizeRoles('ADMIN'), getAllUsers);

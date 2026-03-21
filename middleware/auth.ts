@@ -23,6 +23,8 @@ export const authenticateToken = (req: AuthRequest, res: Response, next: NextFun
       return;
     }
     req.user = decoded as { id: number; role: 'ADMIN' | 'USER' };
+    console.log(req.user);
+    console.log('Decoded JWT:', token, decoded.id, decoded.role);
     next();
   });
 };
@@ -35,7 +37,8 @@ export const authorizeRoles = (...roles: string[]) => {
     }
 
     if (!roles.includes(req.user.role)) {
-      res.status(403).json({ message: 'Insufficient permissions' });
+      console.log(req.user);
+      res.status(403).json({ message: req.user.role +'Insufficient permissions' });
       return;
     }
 

@@ -8,8 +8,8 @@ const router = Router();
 // Accessible to admin users only (since it's for product management)
 router.post(
   '/product-image',
-  // authenticateToken,
-  // authorizeRoles('ADMIN'),
+  authenticateToken,
+  authorizeRoles('ADMIN'),
   generateProductImageUploadUrl
 );
 
